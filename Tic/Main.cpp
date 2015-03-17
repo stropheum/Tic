@@ -43,7 +43,7 @@ void main_loop() {
 			if (grid.check_winner() == 1 || grid.check_winner() == -1 || grid.game_over()) {
 				break;
 			}
-			grid.comp_turn();
+			grid.comp_turn_ai();
 			system("CLS");
 			grid.print();
 			if (grid.check_winner() == 1 || grid.check_winner() == -1 || grid.game_over()) {
@@ -52,7 +52,7 @@ void main_loop() {
 		}
 		else {
 			system("CLS");
-			grid.comp_turn();
+			grid.comp_turn_ai();
 			grid.print();
 			if (grid.check_winner() == 1 || grid.check_winner() == -1 || grid.game_over()) {
 				break;

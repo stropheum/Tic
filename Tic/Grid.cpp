@@ -90,6 +90,38 @@ void Grid::comp_turn() {
 	set_val(choice, comp_val);
 }
 
+// Computer generates a logical choice and sets value
+void Grid::comp_turn_ai() {
+	srand(time(NULL));
+	int choice;
+
+	bool center_found = false;
+	bool diag_found = false;
+	bool horiz_found = false;
+	bool vert_found = false;
+	bool rand_valid = false;
+
+	if (array[4] == NULL_C) {
+		choice = 4;
+		center_found = true;
+	}
+
+	ai_diag_select(choice, diag_found);
+	ai_horiz_select(choice, horiz_found);
+	ai_vert_select(choice, vert_found);
+
+	if (!center_found && !diag_found && !horiz_found && !vert_found) {
+		while (!rand_valid) {
+			choice = rand() % 9;
+			if (array[choice] == NULL_C) {
+				rand_valid = true;
+			}
+		}
+	}
+
+	set_val(choice, comp_val);
+}
+
 void Grid::reset() {
 	for (int i = 0; i < GRID_SIZE; i++) {
 		array[i] = NULL_C;
@@ -124,7 +156,7 @@ int Grid::check_winner() {
 int Grid::check_horiz() {
 	int result = 0;
 
-	for (int i = 0; i < 3; i+= 3) {
+	for (int i = 0; i < GRID_SIZE; i+= 3) {
 		if (array[i] == player_val &&
 			array[i + 1] == player_val &&
 			array[i + 2] == player_val) {
@@ -170,4 +202,63 @@ int Grid::check_diag() {
 		result = -1;
 	}
 	return result;
+}
+
+void Grid::ai_diag_select(int &choice, bool &diag_found) {
+	if (array[0] == player_val && array[4] == player_val && array[8] == NULL_C) {
+		choice = 8;
+		diag_found = true;
+	}
+	else if (array[4] == player_val && array[8] == player_val && array[0] == NULL_C) {
+		choice = 0;
+		diag_found = true;
+	}
+	else if (array[2] == player_val && array[4] == player_val && array[6] == NULL_C) {
+		choice = 6;
+		diag_found = true;
+	}
+	else if (array[4] == player_val && array[6] == player_val && array[2] == NULL_C) {
+		choice = 2;
+		diag_found = true;
+	}
+}
+
+void Grid::ai_horiz_select(int &choice, bool &horiz_found) {
+	for (int i = 0; i < GRID_SIZE; i += 3) {
+		if (array[i] == player_val && array[i + 1] == player_val && array[i + 2] == NULL_C) {
+			choice = i + 2;
+			horiz_found = true;
+			break;
+		}
+		else if (array[i + 1] == player_val && array[i + 2] == player_val && array[i] == NULL_C) {
+			choice = i;
+			horiz_found = true;
+			break;
+		}
+		else if (array[i] == player_val && array[i + 2] == player_val && array[i + 1] == NULL_C) {
+			choice = i + 1;
+			horiz_found = true;
+			break;
+		}
+	}
+}
+
+void Grid::ai_vert_select(int &choice, bool &vert_found) {
+	for (int i = 0; i < 3; i++) {
+		if (array[i] == player_val && array[i + 3] == player_val && array[i + 6] == NULL_C) {
+			choice = i + 6;
+			vert_found = true;
+			break;
+		}
+		else if (array[i + 3] == player_val && array[i + 6] == player_val && array[i] == NULL_C) {
+			choice = i;
+			vert_found = true;
+			break;
+		}
+		else if (array[i] == player_val && array[i + 6] == player_val && array[i + 3] == NULL_C) {
+			choice = i + 3;
+			vert_found = true;
+			break;
+		}
+	}
 }
