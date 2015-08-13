@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <stdio.h>
+#include <cstdlib>
 #include <time.h>
 #include "Grid.h"
 
@@ -95,7 +97,7 @@ void flip_coin() {
 		fflush(stdin);
 		getline(cin, input);
 		cap(input);
-		if (input.compare("HEADS") == 0 || 
+		if (input.compare("HEADS") == 0 ||
 			input.compare("TAILS") == 0) {
 			is_valid = true;
 		}
